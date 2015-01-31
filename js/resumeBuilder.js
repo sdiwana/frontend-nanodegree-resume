@@ -160,10 +160,6 @@ var work = {
 
 	"display" : function() {
 
-				/* Insert WorkExperience Header */
-
-				$("#workExperience").append(HTMLworkStart);
-
 				/* declare temporary variables */
 
 				var formattedEmployer;
@@ -179,6 +175,10 @@ var work = {
 				/* Loop through jobs array, replace %data% with work object variable values, and preprend to HTML tag */
 
 				for (job in work.jobs) {
+
+					/* Sandhya - fix for Report.  Insert WorkExperience Header and create a new DIV */
+
+					$("#workExperience").append(HTMLworkStart);
 
 					/* Format Employer and title, concat together for display */
 
@@ -256,10 +256,6 @@ var projects = {
 
 		"display" : function() {
 
-				/* Display Project Header */
-
-				$("#projects").append(HTMLprojectStart);
-
 				/* Declare temporary variables */
 
 				var formattedTitle;
@@ -271,6 +267,10 @@ var projects = {
 				/* Loop through projects, format, and append them to HTML tags */
 
 				for (project in projects.projects) {
+
+					/* Sandhya - fix from Report.  Display Project Header and create a new DIV? */
+
+					$("#projects").append(HTMLprojectStart);
 
 					/* Project Titles */
 
@@ -472,15 +472,52 @@ var education = {
 /* MAP */
 /* -------------------------------------------------------------------------------- */
 /* Map is displayed through helper.js */
+/* Sandhya - not required, but converted map into an object with display function */
 
 /* Append a google map */
-$("#mapDiv").append(googleMap);
+var map = {
+
+	"display" : function() {
+
+		$("#mapDiv").append(googleMap);
+	}
+};
+
+
+/* FOOTER */
+/* -------------------------------------------------------------------------------- */
+/* Sandhya - Fix for Report.  Add contact labels and data. */
+
+var footer = {
+
+	"display" : function(bioContacts) {
+
+		var formattedHTMLcontactGenericLabel;
+
+		var formattedHTMLcontactGenericData;
+
+		//Loop through bio.contacts, get property names inside contact and their value
+		for(var contact in bioContacts) {
+
+			var data = bioContacts[contact];
+
+			//function to first replace contact label in the HTML,
+			formattedHTMLcontactGenericLabel = HTMLcontactGeneric.replace("%contact%", contact);
+
+			//then reuse formattedHTMLcontactGenericLabel string and replace data.
+			formattedHTMLcontactGenericData = formattedHTMLcontactGenericLabel.replace("%data%", data);
+
+			//finally prepend to footerContacts div id.
+			$("#footerContacts").append(formattedHTMLcontactGenericData);
+		}
+
+	}
+};
 
 
 /* OBJECT FUNCTION CALLS */
 /* -------------------------------------------------------------------------------- */
 /* Call functions to display resume bio, education, work, and project sections */
-
 
 bio.display();
 
@@ -490,6 +527,6 @@ work.display();
 
 projects.display();
 
+map.display();
 
-
-
+footer.display(bio.contacts);
